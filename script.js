@@ -215,6 +215,7 @@ document.addEventListener('DOMContentLoaded', function () {
     var tooltip = d3.select("#right-explainer")
         .append("div")
         .attr("class", "tooltip")
+        .attr("id", "tooltip")
         .html("Slå kandidater til for yderligere info");
 
     var svg = d3.select("#plot")
@@ -586,4 +587,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
     var update_results_button = document.getElementById("update-results");
     update_results_button.addEventListener("click", updateResults);
+
+    var tooltip_element = document.getElementById("tooltip");
+    tooltip_element.addEventListener("click", function () {
+        candidates_button.checked = true;
+        candidates_button.dispatchEvent(new Event('change'));
+    });
 });
