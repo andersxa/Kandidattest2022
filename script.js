@@ -174,21 +174,20 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     window.addEventListener('resize', function () {
-        var container = document.getElementById('container');
         var right = document.getElementById('right');
         var left = document.getElementById('left');
         if (window.innerHeight > window.innerWidth) {
-            container.style.display = 'block';
             right.style.width = '100%';
             left.style.width = '100%';
-            right.top = '0px';
             right.style.position = 'relative';
+            //left_upper.style.height = '100%';
+            //left_lower.style.position = 'relative';
         } else {
-            container.style.display = 'inline';
             right.style.width = '50%';
             left.style.width = '50%';
-            right.top = '50%';
             right.style.position = 'fixed';
+            //left_upper.style.height = '55vh';
+            //left_lower.style.position = 'fixed';
         }
     });
 });
@@ -224,7 +223,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 .style("fill", "lightgrey")
                 .attr("r", 2)
 
-            d3.selectAll("." + selected_party)
+            d3.selectAll(".dot." + selected_party)
                 .transition()
                 .duration(200)
                 .style("fill", d.color)
@@ -310,7 +309,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .enter();
 
         elem.append("circle")
-            .attr("class", "party-marker")
+            .attr("class", function (d) { return "party-marker " + d.marker; })
             .attr("cx", function (d) { return x(-d.factor_1); })
             .attr("cy", function (d) { return y(d.factor_2); })
             .attr("r", 10.0)
@@ -323,7 +322,7 @@ document.addEventListener('DOMContentLoaded', function () {
             .text(function (d) { return d.marker; }).raise();
 
         elem.append("text")
-            .attr("class", "marker")
+            .attr("class", function (d) { return "marker " + d.marker; })
             .attr("x", function (d) { return x(-d.factor_1); })
             .attr("y", function (d) { return y(d.factor_2); })
             .attr("dy", "0.35em")
@@ -466,5 +465,105 @@ document.addEventListener('DOMContentLoaded', function () {
                 return "none";
             }
         });
+        updateResults();
+    });
+
+    var party_results = document.getElementById("party-results");
+    var candidate_results = document.getElementById("candidate-results");
+    var party_data = [];
+    var candidate_data = [];
+    /*Populate the party results table with closest parties and candidates, respecting the region selection*/
+    function updateResults() {
+        party_data = [];
+        candidate_data = [];
+        var region_value = select_region.value;
+        svg.selectAll(".dot").each(function (d) {
+            if (region(d.region) == region_value || region_value == 0) {
+                var x_diff = d.factor_1 - x_pos;
+                var y_diff = d.factor_2 - y_pos;
+                var distance = Math.sqrt(x_diff * x_diff + y_diff * y_diff);
+                candidate_data.push({ distance: distance, marker: d.marker, name: d.name, link: d.link, color: d.color, region: d.region });
+            }
+        });
+        svg.selectAll(".party-marker").each(function (d) {
+            var x_diff = d.factor_1 - x_pos;
+            var y_diff = d.factor_2 - y_pos;
+            var distance = Math.sqrt(x_diff * x_diff + y_diff * y_diff);
+            party_data.push({ distance: distance, marker: d.marker, party: d.party, party_color: d.color });
+        });
+        party_data.sort(function (a, b) {
+            return a.distance - b.distance;
+        });
+        candidate_data.sort(function (a, b) {
+            return a.distance - b.distance;
+        });
+        party_results.innerHTML = "<h2>Partier</h2><p class='tiny-text'>Hold musen her for at belyse</p>";
+        //Add note to hover as tiny text
+        candidate_results.innerHTML = "<h2>Kandidater</h2><p class='tiny-text'>Hold musen her for at belyse</p>";
+        /*Parties don't have links*/
+        /*To display the party symbol, simply create div with class "marker" and add color: white and background-color: party_color*/
+        for (var i = 0; i < 5; i++) {
+            party_results.innerHTML += '<div class="result"><div class="marker" style="background-color: ' + party_data[i].party_color + '"; color: white; display: inline-block; >' + party_data[i].marker + '</div><div class="party-name">' + party_data[i].party + '</div></div>';
+            /*Add party marker for candidates as well*/
+            //Important: Both middle and left click should open the link in a new tab
+            candidate_results.innerHTML += '<div class="result"><div class="marker" style="background-color: ' + candidate_data[i].color + '"; color: white; display: inline-block; >' + candidate_data[i].marker + '</div><div class="party-name"><a href="' + candidate_data[i].link + '" target="_blank">' + candidate_data[i].name + '</a></div></div>';
+        }
+    }
+    for (var i = 0; i < sliders.length; i++) {
+        sliders[i].addEventListener("mouseup", updateResults);
+    }
+
+    var question_neutral_buttons = document.getElementsByClassName('neutral-box');
+    for (var i = 0; i < question_neutral_buttons.length; i++) {
+        question_neutral_buttons[i].addEventListener('change', updateResults);
+    }
+
+    //Highlight the top 5 parties when you hover over the party_results div
+    party_results.addEventListener("mouseenter", function () {
+        if (party_data.length == 0) {
+            return;
+        }
+        svg.selectAll(".party-marker").transition().duration(200).style("opacity", 0.1);
+        svg.selectAll(".dot").transition().duration(200).style("opacity", 0.1);
+        for (var i = 0; i < 5; i++) {
+            svg.selectAll(".party-marker." + party_data[i].marker).transition().duration(200).style("opacity", 1);
+        }
+    });
+    party_results.addEventListener("mouseleave", function () {
+        if (party_data.length == 0) {
+            return;
+        }
+        svg.selectAll(".party-marker").transition().duration(200).style("opacity", 1);
+        svg.selectAll(".dot").transition().duration(200).style("opacity", 1);
+    });
+    //Highlight the top 5 candidates when you hover over the candidate_results div
+    candidate_results.addEventListener("mouseenter", function () {
+        if (candidate_data.length == 0 || candidates_button.checked == false) {
+            return;
+        }
+        svg.selectAll(".dot").transition().duration(200).style("opacity", 0.1).attr("r", 1);
+        svg.selectAll(".party-marker").transition().duration(200).style("opacity", 0.1);
+        x_marker.style("display", "none");
+        x_marker_text.style("fill", "black");
+        for (var i = 0; i < 5; i++) {
+            //Name == data[i].name
+            let region_filter = "";
+            if (select_region.value != 0) {
+                region_filter = ".region-" + region(candidate_data[i].region);
+            }
+            let dots = svg.selectAll(".dot." + candidate_data[i].marker + region_filter).filter(function (d) {
+                return d.name == candidate_data[i].name;
+            });
+            dots.transition().duration(200).style("opacity", 1).attr("r", 5);
+        }
+    });
+    candidate_results.addEventListener("mouseleave", function () {
+        if (candidate_data.length == 0 || candidates_button.checked == false) {
+            return;
+        }
+        svg.selectAll(".dot").transition().duration(200).style("opacity", 1).attr("r", 3);
+        svg.selectAll(".party-marker").transition().duration(200).style("opacity", 1);
+        x_marker.style("display", "block");
+        x_marker_text.style("fill", "white");
     });
 });

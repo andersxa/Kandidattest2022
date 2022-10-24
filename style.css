@@ -1,34 +1,9 @@
-/*This is a page for taking a political candidate test*/
-/*The page should be split into two with a plot being shown on the right for wide screens and a plot on the lower half for tall screens*/
-/*The first half (not the plot) should contain the questions to be asked and a slider to answer with */
-/*Also, the answers of the different parties should be shown on the slider (if enabled by the user) */
-/*The second half should contain the plot */
-/*This plot has different options for the user: show parties or show candidates */
-
-/*Current classes:*/
-/* .container: the container for the whole page */
-/* .left: the left half of the page */
-/* .right: the right half of the page */
-/* .plot: the plot */
-/* .question: the question */
-/* .slider: the slider */
-/* .slider-container: the container for the slider */
-/* .party-answers: contains the table with the answers of the parties */
-
-
-/*Each marker already has a "left: x%" property, where x is the position of the marker on the slider*/
-
-/*Table should have equal width for each column*/
-
 .party-answers-column {
     vertical-align: top;
     padding: 0;
     text-align: center;
 }
 
-.party-answers {
-    width: 100%;
-}
 
 .marker {
     text-align: center;
@@ -39,24 +14,28 @@
     font-size: 12px;
     font-weight: bold;
     line-height: 20px;
+    color: white;
 }
 
+/*Contains left and right divs*/
 .container {
     display: inline;
 }
 
-.left {
+
+#left {
     width: 50%;
-    left: 0;
-    top: 0;
+    display: block;
+    position: relative;
 }
 
-.right {
+#right {
     position: fixed;
     width: 50%;
     right: 0;
     top: 0;
 }
+
 
 input[type='range'] {
     width: 100%;
@@ -83,6 +62,12 @@ aside {
 
 h1 {
     font: 34px sans-serif;
+    font-weight: bold;
+    margin: 10px;
+}
+
+h2 {
+    font: 28px sans-serif;
     font-weight: bold;
     margin: 10px;
 }
@@ -142,22 +127,21 @@ label {
 .question {
     border: 1px solid black;
     border-radius: 10px;
-    margin: 10px;
     padding: 10px;
+    margin: 10px;
 }
 
 #right-explainer {
     position: absolute;
     top: 0;
-    margin-left: 7%;
+    margin-left: 10px;
+    margin-bottom: 10px;
+    background-color: white;
 }
 
 #region-form {
-    /*Should be to the right where tooltip is to the left*/
-    position: absolute;
-    right: 7%;
     margin: 10px;
-    padding: 10px;
+    height: 20px;
 }
 
 .vertical-line {
@@ -166,4 +150,58 @@ label {
     border-left: 1px solid black;
     position: relative;
     margin-bottom: 2px;
+}
+
+.test-results {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-evenly;
+}
+
+/*Parent is final box on the left*/
+/*.test-results should fill out the width of the parent*/
+#party-results.question,
+#candidate-results.question {
+    border: 1px solid black;
+    border-radius: 10px;
+    margin: 10px;
+    padding: 10px;
+}
+
+.result {
+    display: block;
+    font: 20px sans-serif;
+    font-weight: bold;
+    margin: 10px;
+}
+
+.result>div {
+    display: inline-block;
+    margin: 0.3em;
+    vertical-align: middle;
+}
+
+.party-name {
+    font: 20px sans-serif;
+    margin: 10px;
+}
+
+.party-name>a {
+    color: black;
+    text-decoration: none;
+}
+
+.party-name>a:hover {
+    color: black;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+p.tiny-text {
+    font: 16px sans-serif;
+    margin: 10px;
+}
+
+#plot {
+    height: 100vh;
 }
