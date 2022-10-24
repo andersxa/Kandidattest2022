@@ -141,7 +141,8 @@ label {
 
 #right-explainer {
     position: absolute;
-    top: 0;
+    bottom: 0;
+    right: 0;
     margin-left: 10px;
     margin-bottom: 10px;
     background-color: white;
