@@ -102,6 +102,13 @@ document.addEventListener('DOMContentLoaded', function () {
         //Add div with class marker for each party in column
         for (var j = 0; j < columns; j++) {
             var td = document.createElement('td');
+            if (table[j].length) {
+                //Add vertical line in the middle of each column
+                var vertical_line = document.createElement('div');
+                vertical_line.className = 'vertical-line';
+                td.appendChild(vertical_line);
+            }
+
             td.className = 'party-answers-column';
             for (var k = 0; k < table[j].length; k++) {
                 var party = table[j][k];
