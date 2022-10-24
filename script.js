@@ -76,7 +76,7 @@ document.addEventListener('DOMContentLoaded', function () {
         //Round to nearest uneven number
         var columns = Math.floor(width / 20);
         if (columns % 2 == 0) {
-            columns++;
+            columns--;
         }
 
         var tr = question_table[question_number];
@@ -93,6 +93,9 @@ document.addEventListener('DOMContentLoaded', function () {
             var party = parties[j];
             var party_answer = (party_answers[question_number][party] + 2) / 4;
             var column = Math.floor(party_answer * columns);
+            if (column == columns) {
+                column--;
+            }
             table[column].push(party);
         }
         //Create the table
@@ -352,7 +355,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .attr("cy", y(0))
         .attr("r", 10.0)
         .style("fill", "black")
-        .style("stroke", "black");
+        .style("stroke", "black").raise();
     var x_marker_text = svg.append("text")
         .attr("class", "marker")
         .attr("x", x(0))
@@ -360,7 +363,7 @@ document.addEventListener('DOMContentLoaded', function () {
         .attr("dy", "0.35em")
         .attr("text-anchor", "middle")
         .style("fill", "white")
-        .text("X");
+        .text("X").raise();
 
     var blink = function () {
         x_marker.transition()
@@ -441,6 +444,8 @@ document.addEventListener('DOMContentLoaded', function () {
         x_marker.attr("cy", y(y_pos));
         x_marker_text.attr("x", x(-x_pos));
         x_marker_text.attr("y", y(y_pos));
+        x_marker.raise();
+        x_marker_text.raise();
     }
     update_x_marker();
 
