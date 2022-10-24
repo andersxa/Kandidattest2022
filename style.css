@@ -140,7 +140,7 @@ label {
 }
 
 #right-explainer {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     right: 0;
     margin-left: 10px;
@@ -212,5 +212,13 @@ p.tiny-text {
 }
 
 #plot {
+    /*Ensure square, shrink height to match width*/
+    width: 100%;
+    padding-bottom: 130%;
+    position: relative;
+}
+
+#plot>svg {
+    width: 50vw;
     height: 100vh;
 }

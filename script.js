@@ -176,16 +176,33 @@ document.addEventListener('DOMContentLoaded', function () {
     window.addEventListener('resize', function () {
         var right = document.getElementById('right');
         var left = document.getElementById('left');
+        var right_explainer = document.getElementById('right-explainer');
+        var svg = document.querySelector("#plot svg");
+        var plot = document.getElementById('plot');
         if (window.innerHeight > window.innerWidth) {
             right.style.width = '100%';
             left.style.width = '100%';
             right.style.position = 'relative';
+            //right_explainer.style.width = '100%';
+            right_explainer.style.position = 'relative';
+            right_explainer.style.bottom = 'auto';
+            right_explainer.style.right = 'auto';
+            svg.style.height = "100vw";
+            svg.style.width = "100%";
+            plot.style.paddingBottom = "0";
             //left_upper.style.height = '100%';
             //left_lower.style.position = 'relative';
         } else {
             right.style.width = '50%';
             left.style.width = '50%';
             right.style.position = 'fixed';
+            //right_explainer.style.width = 'auto';
+            right_explainer.style.position = 'fixed';
+            right_explainer.style.bottom = '0';
+            right_explainer.style.right = '0';
+            svg.style.height = "100vh";
+            svg.style.width = "50vw";
+            plot.style.paddingBottom = "130%";
             //left_upper.style.height = '55vh';
             //left_lower.style.position = 'fixed';
         }
