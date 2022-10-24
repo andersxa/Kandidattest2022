@@ -1,0 +1,91 @@
+.marker-A {
+    background-color: #a82721;
+    color: #ffffff;
+}
+
+.marker-B {
+    background-color: #733280;
+    color: #ffffff;
+}
+
+.marker-C {
+    background-color: #96b226;
+    color: #ffffff;
+}
+
+.marker-D {
+    background-color: #127b7f;
+    color: #ffffff;
+}
+
+.marker-F {
+    background-color: #e07ea8;
+    color: #ffffff;
+}
+
+.marker-I {
+    background-color: #3fb2be;
+    color: #ffffff;
+}
+
+.marker-K {
+    background-color: #8b8474;
+    color: #ffffff;
+}
+
+.marker-M {
+    background-color: #b48cd2;
+    color: #ffffff;
+}
+
+.marker-O {
+    background-color: #eac73e;
+    color: #ffffff;
+}
+
+.marker-Q {
+    background-color: #5abe82;
+    color: #ffffff;
+}
+
+.marker-V {
+    background-color: #254264;
+    color: #ffffff;
+}
+
+.marker-Æ {
+    background-color: #7896d2;
+    color: #ffffff;
+}
+
+.marker-Ø {
+    background-color: #e6801a;
+    color: #ffffff;
+}
+
+.marker-Å {
+    background-color: #2b8738;
+    color: #ffffff;
+}
+
+.marker-X {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/*The marker is an "option" element on a slider which is aligned under a tick*/
+
+.marker {
+    width: 20px;
+    height: 20px;
+    border-radius: 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: bold;
+    bottom: -20px;
+    left: 0;
+    transform: translateX(-50%);
+    z-index: 1;
+}

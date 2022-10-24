@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html>
+<!-- This is a page for taking a political candidate test -->
+<!-- The page should be split into two with a plot being shown on the right for wide screens and a plot on the lower half for tall screens-->
+<!-- The first half (not the plot) should contain the questions to be asked and a slider to answer with -->
+<!-- Also, the answers of the different parties should be shown on the slider (if enabled by the user) -->
+<!-- The second half should contain the plot -->
+<!-- This plot has different options for the user: show parties or show candidates -->
+
+<head>
+    <meta charset="utf-8">
+    <title>Kandidattesten på tværs</title>
+    <link rel="stylesheet" href="style.css">
+    <!--link rel="stylesheet" href="marker.css"-->
+    <script src="party_answers.js"></script>
+    <script src="script.js"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+
+<body>
+    <div class="container" id="container">
+        <div class="left" id="left">
+            <div>
+                <h1>Kandidattesten på tværs</h1>
+                <!--p>Konventionelle kandidattests tager oftest udgangspunkt i individuelle svar og din specifikke enighed
+                    med disse.</p-->
+                <!--p>På denne side kan du tage en test, som tager udgangspunkt i enkelte spørgsmål, men gennem en
+                    matematisk vægtning finder din generelle politiske retning.</p-->
+                <!--p>Testen finder og vægter de spørgsmål, som spreder kandidaterne mest, og på den måde bygges et kort
+                    over det danske politiske landskab.</p-->
+                <!--aside>Obs!: Nogle partier er ikke så nemt adskillige; dette forvrænger dermed testens resultat. Det
+                    drejer sig
+                    især om partier, der ligger tæt på hinanden, men hvor fundamentale spørgsmål, der adskiller dem,
+                    ikke er blevet anvendt. Et eksempel er Moderaterne og Kristendemokraterne.</aside-->
+                <input type="checkbox" id="show-parties" name="show-parties" value="show-parties"
+                    class="show-parties-check">
+                <label for="show-parties">Vis partiers svar (gennemsnitligt)</label>
+                <div id="party-legend"></div>
+                <p>Scroll for flere spørgsmål.</p>
+                <!--p>Ovenstående knap gør det muligt at se partiernes gennemsnitlige svar til hvert spørgsmål.</p-->
+                <!--p>Det anbefales at tage testen først uden disse slået til. Hvorefter man så kan slå dem til
+                    og eksperimentere løs.</p-->
+                <!--p>Skalaen starter ikke i midten, men starter der, hvor kandidaterne i gennemsnit har svaret. Der
+                    er altså ved nogle spørgsmål en generel enighed eller uenighed.</p-->
+                <!--p>Ved hvert spørgsmål er der således en <em>ligeglad</em> knap, som sætter dit svar til gennemsnittet,
+                    hvor det altså ikke har nogen indflydelse. <em>Ligeglad</em> knappen gør at spørgsmålet ikke
+                    påvirker dit resultat - hvorimod hvis du svarer i midten, så vil det have påvirkning på dit
+                    resultat.</p-->
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 1</h1>
+                <p>Danmark skal bruge flere penge på at styrke tog- og busdrift frem for at bygge nye motorveje</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-1-n" name="Q-1-n"
+                            value="Q-1-n"><label class="neutral" for="Q-1-n">Ligeglad</label><input id="Q-1-s"
+                            type="range" min="-2" max="2" value="0.35" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-1"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 2</h1>
+                <p>Der skal indføres en særlig skat på de allerhøjeste indkomster</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-2-n" name="Q-2-n"
+                            value="Q-2-n"><label class="neutral" for="Q-2-n">Ligeglad</label><input id="Q-2-s"
+                            type="range" min="-2" max="2" value="-0.31" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 3</h1>
+                <p>Kriminalitet begået i udsatte boligområder skal straffes særligt hårdt</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-3-n" name="Q-3-n"
+                            value="Q-3-n"><label class="neutral" for="Q-3-n">Ligeglad</label><input id="Q-3-s"
+                            type="range" min="-2" max="2" value="-0.51" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 4</h1>
+                <p>På sigt skal Danmark meldes ud af EU</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-4-n" name="Q-4-n"
+                            value="Q-4-n"><label class="neutral" for="Q-4-n">Ligeglad</label><input id="Q-4-s"
+                            type="range" min="-2" max="2" value="-1.12" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-4"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 5</h1>
+                <p>Det er fornuftigt, at Danmark i de kommende år bruger markant flere penge på forsvaret</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-5-n" name="Q-5-n"
+                            value="Q-5-n"><label class="neutral" for="Q-5-n">Ligeglad</label><input id="Q-5-s"
+                            type="range" min="-2" max="2" value="0.96" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-5"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 6</h1>
+                <p>Det er okay, at den økonomiske ulighed stiger, så længe danskerne generelt bliver rigere</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-6-n" name="Q-6-n"
+                            value="Q-6-n"><label class="neutral" for="Q-6-n">Ligeglad</label><input id="Q-6-s"
+                            type="range" min="-2" max="2" value="-0.11" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-6"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 7</h1>
+                <p>Forældres indkomst skal være et af kriterierne for fordeling af elever i gymnasiet</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-7-n" name="Q-7-n"
+                            value="Q-7-n"><label class="neutral" for="Q-7-n">Ligeglad</label><input id="Q-7-s"
+                            type="range" min="-2" max="2" value="-0.99" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-7"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 8</h1>
+                <p>Det skal være muligt at tjene penge på at drive private børnehaver og vuggestuer</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-8-n" name="Q-8-n"
+                            value="Q-8-n"><label class="neutral" for="Q-8-n">Ligeglad</label><input id="Q-8-s"
+                            type="range" min="-2" max="2" value="0.44" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-8"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 9</h1>
+                <p>Der skal indføres skat på fortjenesten ved salg af bolig</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-9-n" name="Q-9-n"
+                            value="Q-9-n"><label class="neutral" for="Q-9-n">Ligeglad</label><input id="Q-9-s"
+                            type="range" min="-2" max="2" value="-0.29" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-9"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 10</h1>
+                <p>Det er en god idé, at dagpengesatsen for nyuddannede er sat ned</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-10-n" name="Q-10-n"
+                            value="Q-10-n"><label class="neutral" for="Q-10-n">Ligeglad</label><input id="Q-10-s"
+                            type="range" min="-2" max="2" value="0.15" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-10"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 11</h1>
+                <p>Transkønnede under 18 år skal have mulighed for juridisk kønsskifte (skifte cpr-nummer)</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-11-n" name="Q-11-n"
+                            value="Q-11-n"><label class="neutral" for="Q-11-n">Ligeglad</label><input id="Q-11-s"
+                            type="range" min="-2" max="2" value="-0.18" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-11"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 12</h1>
+                <p>Pensionsalderen skal fortsætte med at stige i takt med, at levealderen stiger</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-12-n" name="Q-12-n"
+                            value="Q-12-n"><label class="neutral" for="Q-12-n">Ligeglad</label><input id="Q-12-s"
+                            type="range" min="-2" max="2" value="0.14" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-12"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 13</h1>
+                <p>Danmark skal undersøge muligheden for at udvikle A-kraft som energikilde herhjemme</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-13-n" name="Q-13-n"
+                            value="Q-13-n"><label class="neutral" for="Q-13-n">Ligeglad</label><input id="Q-13-s"
+                            type="range" min="-2" max="2" value="0.10" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-13"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 14</h1>
+                <p>Der bør dannes en regering hen over midten</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-14-n" name="Q-14-n"
+                            value="Q-14-n"><label class="neutral" for="Q-14-n">Ligeglad</label><input id="Q-14-s"
+                            type="range" min="-2" max="2" value="-0.63" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-14"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 15</h1>
+                <p>Der skal afsættes penge til at hjælpe kontanthjælpsmodtagere, når priserne stiger</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-15-n" name="Q-15-n"
+                            value="Q-15-n"><label class="neutral" for="Q-15-n">Ligeglad</label><input id="Q-15-s"
+                            type="range" min="-2" max="2" value="0.30" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-15"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 16</h1>
+                <p>Der skal indføres kvoter, der sikrer mindst 30 procent kvinder i virksomheders bestyrelser</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-16-n" name="Q-16-n"
+                            value="Q-16-n"><label class="neutral" for="Q-16-n">Ligeglad</label><input id="Q-16-s"
+                            type="range" min="-2" max="2" value="-0.39" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-16"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 17</h1>
+                <p>Der skal være permanent grænsekontrol mellem Danmark og Tyskland</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-17-n" name="Q-17-n"
+                            value="Q-17-n"><label class="neutral" for="Q-17-n">Ligeglad</label><input id="Q-17-s"
+                            type="range" min="-2" max="2" value="-0.76" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-17"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 18</h1>
+                <p>Man skal automatisk blive organdonor, når man fylder 18 år, medmindre man aktivt framelder sig</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-18-n" name="Q-18-n"
+                            value="Q-18-n"><label class="neutral" for="Q-18-n">Ligeglad</label><input id="Q-18-s"
+                            type="range" min="-2" max="2" value="0.25" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-18"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 19</h1>
+                <p>Der skal udflyttes flere uddannelsespladser fra de store byer</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-19-n" name="Q-19-n"
+                            value="Q-19-n"><label class="neutral" for="Q-19-n">Ligeglad</label><input id="Q-19-s"
+                            type="range" min="-2" max="2" value="-0.02" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-19"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 20</h1>
+                <p>Asylansøgere bør sendes til et land uden for EU - f.eks. Rwanda - mens deres ansøgning behandles</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-20-n" name="Q-20-n"
+                            value="Q-20-n"><label class="neutral" for="Q-20-n">Ligeglad</label><input id="Q-20-s"
+                            type="range" min="-2" max="2" value="-0.18" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-20"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 21</h1>
+                <p>Den såkaldte Arne-pension skal afskaffes</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-21-n" name="Q-21-n"
+                            value="Q-21-n"><label class="neutral" for="Q-21-n">Ligeglad</label><input id="Q-21-s"
+                            type="range" min="-2" max="2" value="-0.35" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-21"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 22</h1>
+                <p>Lønnen til ansatte i klassiske velfærdsfag som sygeplejersker og pædagoger bør sættes markant op</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-22-n" name="Q-22-n"
+                            value="Q-22-n"><label class="neutral" for="Q-22-n">Ligeglad</label><input id="Q-22-s"
+                            type="range" min="-2" max="2" value="0.80" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-22"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 23</h1>
+                <p>Danmark bør indføre CO2-afgift på flyrejser</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-23-n" name="Q-23-n"
+                            value="Q-23-n"><label class="neutral" for="Q-23-n">Ligeglad</label><input id="Q-23-s"
+                            type="range" min="-2" max="2" value="0.50" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-23"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 24</h1>
+                <p>Det er en god idé med naturnationalparker, hvor der bliver udsat store dyr, som lever vildt</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-24-n" name="Q-24-n"
+                            value="Q-24-n"><label class="neutral" for="Q-24-n">Ligeglad</label><input id="Q-24-s"
+                            type="range" min="-2" max="2" value="0.49" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-24"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="question">
+                <h1>Spørgsmål 25</h1>
+                <p>Unge op til 24 år skal have ret til gratis offentlig psykologhjælp uden lægehenvisning</p>
+                <div class="slider">
+                    <div class="slider-container"><input class="neutral-box" type="checkbox" id="Q-25-n" name="Q-25-n"
+                            value="Q-25-n"><label class="neutral" for="Q-25-n">Ligeglad</label><input id="Q-25-s"
+                            type="range" min="-2" max="2" value="0.56" list="steplist" step="any"><datalist
+                            id="steplist">
+                            <option value="-2" label="Helt uenig">
+                            <option value="0">
+                            <option value="2" label="Helt enig">
+                        </datalist>
+                        <div class="party-answers" id="Q-25"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="right" id="right">
+            <div id="right-explainer">
+                <input type="checkbox" id="show-candidates" name="show-candidates" value="show-candidates"
+                    class="show-parties-check">
+                <label for="show-candidates">Vis kandidaterne</label>
+            </div>
+            <form id="region-form">
+                <select name="region" id="region">
+                    <option value="0">Alle regioner</option>
+                    <option value="1">Københavns Omegns Storkreds</option>
+                    <option value="2">Sjællands Storkreds</option>
+                    <option value="3">Vestjyllands Storkreds</option>
+                    <option value="4">Fyns Storkreds</option>
+                    <option value="5">Østjyllands Storkreds</option>
+                    <option value="6">Nordjyllands Storkreds</option>
+                    <option value="7">Københavns Storkreds</option>
+                    <option value="8">Nordsjællands Storkreds</option>
+                    <option value="9">Sydjyllands Storkreds</option>
+                    <option value="10">Bornholms Storkreds</option>
+                </select>
+            </form>
+            <div id="plot" width="100%" height="100%"></div>
+        </div>
+    </div>
+</body>
+
+
+
+</html>
