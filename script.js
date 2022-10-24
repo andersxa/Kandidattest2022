@@ -566,4 +566,7 @@ document.addEventListener('DOMContentLoaded', function () {
         x_marker.style("display", "block");
         x_marker_text.style("fill", "white");
     });
+
+    var update_results_button = document.getElementById("update-results");
+    update_results_button.addEventListener("click", updateResults);
 });

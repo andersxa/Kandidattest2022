@@ -64,6 +64,14 @@ h1 {
     font: 34px sans-serif;
     font-weight: bold;
     margin: 10px;
+    vertical-align: middle;
+}
+
+h1>button {
+    font: 24px sans-serif;
+    font-weight: bold;
+    margin: 10px;
+    vertical-align: middle;
 }
 
 h2 {
