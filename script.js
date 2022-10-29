@@ -224,9 +224,9 @@ document.addEventListener('DOMContentLoaded', function () {
         .attr("viewBox", "0 0 600 600")
         .append("g");
     var size = 600;
-    //Use file political_compass.png as background
+    //Use file Political_Compass_purple_LibRight.svg as background
     svg.append("image")
-        .attr("xlink:href", "political_compass.png")
+        .attr("xlink:href", "Political_Compass.svg")
         .attr("width", size)
         .attr("height", size);
 
@@ -286,8 +286,12 @@ document.addEventListener('DOMContentLoaded', function () {
     d3.csv("data.csv", function (data) {
 
         var tooltip_mousemove = function (d) {
+            function round_and_scale(value, domain) {
+                let scale = ((value - domain[0]) / (domain[1] - domain[0])) * 2 - 1;
+                return Math.round(scale * 100) / 100;
+            }
             tooltip
-                .html(d.name + ". Klik for mere info")
+                .html(d.name + ".<br>(" + round_and_scale(-d.factor_1, x.domain()) + "," + round_and_scale(d.factor_2, y.domain()) + ")<br>Klik for mere info")
                 .on("click", function () {
                     window.open(d.link);
                 }
