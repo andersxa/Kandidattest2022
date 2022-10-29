@@ -270,12 +270,9 @@ document.addEventListener('DOMContentLoaded', function () {
         .domain([-4.9057353771713395, 4.9057353771713395])
         .range([size - margin, margin]);
 
-    /*'Københavns Omegns Storkreds', 'Sjællands Storkreds',
-       'Vestjyllands Storkreds', 'Fyns Storkreds',
-       'Østjyllands Storkreds', 'Nordjyllands Storkreds',
-       'Københavns Storkreds', 'Nordsjællands Storkreds',
-       'Sydjyllands Storkreds', 'Bornholms Storkreds'
-    */
+    var x_pos = 0.0;
+    var y_pos = 0.0;
+
     var region = d3.scaleOrdinal().domain(['Københavns Omegns Storkreds', 'Sjællands Storkreds',
         'Vestjyllands Storkreds', 'Fyns Storkreds',
         'Østjyllands Storkreds', 'Nordjyllands Storkreds',
@@ -284,14 +281,13 @@ document.addEventListener('DOMContentLoaded', function () {
         .range([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]).unknown(0);
     //Plot a scatter plot with the two factors
     d3.csv("data.csv", function (data) {
-
         var tooltip_mousemove = function (d) {
             function round_and_scale(value, domain) {
                 let scale = ((value - domain[0]) / (domain[1] - domain[0])) * 2 - 1;
-                return Math.round(scale * 100) / 100;
+                return Math.round(scale * 1000) / 100;
             }
             tooltip
-                .html(d.name + ".<br>(" + round_and_scale(-d.factor_1, x.domain()) + "," + round_and_scale(d.factor_2, y.domain()) + ")<br>Klik for mere info")
+                .html(d.name + ".<br>Deres: (x: " + round_and_scale(-d.factor_1, x.domain()) + "; y: " + round_and_scale(d.factor_2, y.domain()) + ")<br>Dit: (x: " + round_and_scale(-x_pos, x.domain()) + "; y: " + round_and_scale(y_pos, y.domain()) + ")<br>Klik for mere info")
                 .on("click", function () {
                     window.open(d.link);
                 }
@@ -421,8 +417,6 @@ document.addEventListener('DOMContentLoaded', function () {
         1.59842385, 1.48982855, 1.47840363, 1.39678651, 1.65662041,
         1.66284302, 1.19432519, 1.51699526, 1.40571243, 1.44477894];
     var question_negation = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, -1, 1, -1, 1, 1, 1, 1, 1, 1, -1, 1, 1, 1];
-    var x_pos = 0.0;
-    var y_pos = 0.0;
     var question_values = [];
     var question_means = [0.35443038, -0.30955121, -0.51261468, -1.11926606, 0.9586682,
         -0.10611303, -0.98847926, 0.43583815, -0.29398148, 0.15491329,
